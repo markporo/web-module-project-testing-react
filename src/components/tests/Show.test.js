@@ -35,21 +35,18 @@ test('renders same number of options seasons are passed in', () => {
 
 //*********fix this??????? */
 test('handleSelect is called when an season is selected', async () => {
-    render(<Show show={testShow} selectedSeason={"none"} />);
-    const selectedSeason = screen.queryByTestId("episodes-container");
-    expect(selectedSeason).not.toBeInTheDocument()
+    const handleSelect = jest.fn()
 
-    // userEvent.selectOptions(screen.findByRole('select'), ['1'])
+    render(<Show handleSelect={handleSelect} show={testShow} selectedSeason={"none"} />);
 
-    // await waitFor(() => expect(screen.getByTestId("episodes-container").toBeInTheDocument()))
+    const showOptions = screen.getAllByTestId("season-option");
 
+    console.log("opts:", showOptions.length);
+
+    userEvent.selectOptions(screen.getByLabelText(/Select A Season/i), ['1'])
+
+    expect(handleSelect).toHaveBeenCalled();
 });
-
-// userEvent.selectOptions(screen.getByRole('listbox'), ['1', '3'])
-
-// expect(screen.getByRole('option', {name: 'A'}).selected).toBe(true)
-// expect(screen.getByRole('option', {name: 'B'}).selected).toBe(false)
-
 
 
 

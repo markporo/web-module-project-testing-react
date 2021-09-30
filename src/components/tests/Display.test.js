@@ -4,6 +4,8 @@ import { userEvent } from '@testing-library/user-event';
 import Display from './../Display';
 import Show from './../Show';
 
+import mockFetch from "../../api/fetchShow"
+jest.mock("../../api/fetchShow");
 
 const testShow = {
     //add in approprate test data structure here.
@@ -19,6 +21,7 @@ test("The Display component renders without any passed in props", () => {
 
 test("when the fetch button is pressed, the show component will display", async () => {
 
+    mockFetch.mockResolvedValueOnce(testShow);
 
     render(<Display />);
 
@@ -30,18 +33,22 @@ test("when the fetch button is pressed, the show component will display", async 
 })
 
 
-// ********** ????
+// ********** ???? works....but not acutally using my test data
 test("when the fetch button is pressed, the amount of select options rendered is equal to the amount of seasons in your test data.", async () => {
+    mockFetch.mockResolvedValueOnce(testShow);
+
     render(<Display />);
 
     const button = screen.queryByRole('button')
     fireEvent.click(button);
 
-    await waitFor(() => expect(screen.getAllByTestId("season-option")).toHaveLength(4))
+    await waitFor(() => expect(screen.getAllByTestId("season-option")).toHaveLength(3))
 })
 
 
 test("when the fetch button is pressed, this mock displayFun function is called", async () => {
+    mockFetch.mockResolvedValueOnce(testShow);
+
     const fakeDisplayFunc = jest.fn(() => {
         return "fetch button pressed and shows display"
     })
